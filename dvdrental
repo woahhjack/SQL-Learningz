@@ -1,0 +1,118 @@
+/// Using dvdrental database from Jose Portilla
+
+
+
+#Using SELECT and WHERE to solve business problems.
+
+// A customer lost their wallet at the store. Can you find their email address using their first and last name from their ID?
+
+SELECT email FROM customer
+WHERE first_name = 'Nancy' AND last_name = 'Thomas';
+
+// A customer wants to know what the movie "Outlaw Hanky" is about. Can you give them the description for the movie?
+
+SELECT description FROM film
+WHERE title = 'Outlaw Hanky'
+
+// A customer is late on their movie return, we've mailed them a letter to their address '259 Ipoh Drive'. We should also call them. Can you find their phone number?
+
+SELECT phone FROM address
+WHERE address = '259 Ipoh Drive'
+
+#Using ORDER BY and LIMIT
+//ORDER BY can be ordered using ASC or DESC
+//You can also ORDER BY columns not selected in the SELECT statement
+
+//LIMIT allows to limit the # of rows returned for a query (ex: top 20)
+
+// For each store, can you order by the customers first name in from Z -> A?
+
+SELECT * FROM customer
+ORDER BY store_id, first_name DESC;
+
+// What were the 5 most recent payments ( > $0)?
+
+SELECT * FROM payment
+WHERE amount != 0.00
+ORDER BY payment_date DESC
+LIMIT 5;
+
+// We want to reward our first ten paying customers. What are their IDs?
+
+SELECT customer_id FROM payment
+WHERE amount != 0.00
+ORDER BY payment_date ASC
+LIMIT 10; 
+
+
+// A customer wants to quickly rent a movie to watch over their short lunch break. What are the titles of the 5 shortest movies?
+
+SELECT title FROM film
+ORDER BY length ASC
+LIMIT 5;
+
+// If the customer can watch any movie that is 50 minutes of less, how many options do they have?
+
+SELECT COUNT(title) FROM film
+WHERE length <= 50;
+
+
+#Using BETWEEN
+//The BETWEEN operation is the same as ">= AND =<" can also be negative -> NOT BETWEEN
+//If using BETWEEN for dates, must be in ISO 8601 format -> YYYY-MM-DD
+//If dates include timestamps, values past 00:00h will be excluded (ex: 2022-01-01 00:01H)
+
+#Using IN operator
+//IN allows for multiple WHERE conditions using commas seperate conditions
+
+#Using LIKE (ILIKE) operator
+//LIKE allows to perform pattern matching against string data with the use of wildcard characters
+//Wildcard characters: % matches any sequence of characters
+//underscore '_' matches any single character
+//LIKE is case sensitive, ILIKE is not.
+
+// Find all 'Cars' movie
+WHERE title LIKE 'Cars _' would return Cars, Cars 1, Cars 2, ...
+
+// Multiple underscores
+for a formart suchas as 'Version#A4', 'Version#B2', ...
+WHERE value LIKE 'Version#_ _'
+
+
+//Pattern matching operators combined
+WHERE name LIKE '_her%' would return Cheryl, Theresa, Sherri, ....
+
+// How many customers have a first name that starts with J ?
+SELECT COUNT(*) FROM customer
+WHERE first_name LIKE 'J%' /* Use ILIKE if first_name column isn't capitalized
+
+
+
+
+// How many payment transactions were greater than $5?
+SELECT COUNT(amount) FROM payment
+WHERE amount > 5;
+
+// How many actors have a first name that starts with the letter P?
+SELECT COUNT(first_name) FROM actor
+WHERE first_name LIKE ('P%');
+
+// How many unique districts are our customers from?
+SELECT COUNT(DISTINCT district) FROM address;
+
+// Retrieve the list of those district names
+SELECT DISTINCT district FROM address
+ORDER BY district ASC;
+
+// How many films have a rating of R and replacement cost between $5 and $15?
+SELECT COUNT(title) FROM film
+WHERE rating ='R'
+AND
+replacement_cost BETWEEN 5 AND 15;
+
+// How many films have the word Truman somewhere in the title?
+SELECT COUNT(title) FROM film
+WHERE title ILIKE '%Truman%';
+
+
+
