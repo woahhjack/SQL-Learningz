@@ -115,4 +115,119 @@ SELECT COUNT(title) FROM film
 WHERE title ILIKE '%Truman%';
 
 
+//-----------------_____________________________---------------------------\\
+
+#Aggregate functions 
+//An aggregate function takes multiple inputs and returns a single output
+//Types:
+AVG() /*Returns floating point value so use ROUND() to specify precision
+COUNT()
+MAX()
+MIN()
+SUM()
+
+//Aggegrgate functions happen only in the SELECT or HAVING clause
+
+//What is the highest replacement cost?
+SELECT MAX(replacement_cost) FROM film;
+
+//What is the average rounded replacement cost (2 decimal places)?
+SELECT ROUND(AVG(replacement_cost),2) FROM film
+
+//What is the cost to replace ALL movies?
+SELECT SUM(replacement_cost) FROM film;
+
+#GROUP BY
+//Used to aggregate columns
+//WHERE statements should no refer to the aggregation result
+
+//What are the sales for each company and company division?
+SELECT company, division, SUM(sale)
+FROM finance_table
+GROUP BY company, division
+
+//What customer is spending the most money?
+SELECT customer_id, SUM(amount) FROM payment
+GROUP BY customer_id
+ORDER BY sum(amount) DESC;
+
+//Who is making the most transcations?
+SELECT customer_id, COUNT(amount) FROM payment
+GROUP BY customer_id
+ORDER BY COUNT(amount) DESC
+
+
+//How much is each customer spending with each staff member?
+
+SELECT customer_id, staff_id, SUM(amount) FROM payment
+GROUP BY staff_id, customer_id 
+ORDER BY customer_id;
+
+
+# DATE use to pull the day from timestamp (DD:MM:YY HH:MM:SS:)
+
+
+// We have two staff numbers with staff IDs 1 and 2. We want to give a bonus to the staff member
+that handled the most payments (# of transactions). How many payments did each staff member handle?
+
+SELECT staff_id, COUNT(amount) FROM payment
+GROUP BY staff_id
+ORDER BY COUNT(amount);
+
+// Corporate HQ is doing a study on the relationship between replacement cost and movie MPAA rating
+What is the average replacement cost per MPAA rating?
+
+SELECT rating, ROUND(AVG(replacement_cost),2) 
+FROM film
+GROUP BY rating
+ORDER BY rating DESC
+
+// We are running a promotion to reward the top 5 customers with coupons. What are the top 5 customers (ids) by total spent? 
+
+SELECT customer_id, SUM(amount) FROM payment
+GROUP BY customer_id
+ORDER BY sum(amount) DESC
+
+# HAVING clause: filter after an aggregation has already taken place (WHERE statement for an aggregate)
+//For example, wanting to filter out by SUM(sales) where the total sales are   > $100
+
+SELECT customer_id, SUM(amount) FROM payment
+GROUP BY customer_id
+HAVING SUM(amount) > 100
+
+// We are launching a platinum service for our most loyal customers. We will assign platinum status to customers that
+had 40 or more transaction payments. What customers are eligible for platinum status?
+
+SELECT customer_id, COUNT(customer_id) FROM payment
+GROUP BY customer_id
+HAVING COUNT(customer_id) >= 40;
+
+# What are the customer ids of customers who have spent more than $100 in payment transactions with our staff_id member 2?
+
+SELECT customer_id, SUM(amount) FROM payment
+WHERE staff_id = 2
+GROUP BY customer_id
+HAVING SUM(amount) > 100;
+
+
+//-----_____----\\\
+//Assessment test
+
+//1. Return the customer IDs of customers who have spent at least $110 with the staff member who has an ID of 2.
+SELECT customer_id, SUM(amount) FROM payment
+WHERE staff_id = 2
+GROUP BY customer_id
+HAVING SUM(amount) > 110;
+
+// 2. How many films begin with the letter J?
+SELECT COUNT(title) FROM film
+WHERE title LIKE 'J%'
+
+//3. What customer has the highest customer ID number whose name starts with an 'E' and has an address ID lower than 500?
+
+SELECT first_name, last_name FROM customer
+WHERE first_name LIKE 'E%' AND address_id < 500
+ORDER BY customer_id DESC
+LIMIT 1;
+
 
