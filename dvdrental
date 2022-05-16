@@ -230,4 +230,15 @@ WHERE first_name LIKE 'E%' AND address_id < 500
 ORDER BY customer_id DESC
 LIMIT 1;
 
+//////#JOINS\\\\
+Use to combine multiple tables together. Different types of JOINS depending on tables
+Specify columns in SELECT statement to eliminate duplication on the view
+
+#INNER JOIN (middle venn diagram)-> set of records that match in BOTH tables, entries with no match in both tables will be excluded
+Ex: Is there a way to join payment table against customer table using the customer_id
+
+SELECT payment_id, payment.customer_id, first_name FROM payment ./customer_id appears in both tables so specify which one
+INNER JOIN customer
+ON payment.customer_id = customer.customer_id /. join on customer_id
+
 
