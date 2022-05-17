@@ -242,3 +242,8 @@ INNER JOIN customer
 ON payment.customer_id = customer.customer_id /. join on customer_id
 
 
+#LEFT OUTER JOIN (or just LEFT JOIN)
+/*Anything from the right (tableB) without a match will return as null
+/*#LEFT OUTER JOIN to exclude all null values -> use a WHERE clause WHERE IS NOT NULL
+
+
