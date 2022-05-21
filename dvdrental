@@ -247,3 +247,31 @@ ON payment.customer_id = customer.customer_id /. join on customer_id
 /*#LEFT OUTER JOIN to exclude all null values -> use a WHERE clause WHERE IS NOT NULL
 
 
+/* Business application for JOIN
+A customer is a huge fan of Nick Wahlberg and wants to know which movies he is in.
+
+SELECT title, first_name, last_name /* We want to examine these columns
+FROM film_actor /*film actor table as starting point
+INNER JOIN actor
+ON film_actor.actor_id = actor.actor_id /* bridge the relationship of the actor_id
+INNER JOIN film /* Now link actor_id and film_id
+ON film_actor.film_id = film.film_id
+WHERE first_name ='Nick' and last_name ='Wahlberg'
+
+
+
+#TO_CHAR() General function to convert data type to text -useful for timestamp formatting -> TO_CHAR(date_col, 'mm-dd-yyyy')
+
+#EXTRACT() ->useful to extract piece of timestamp
+ex: SELECT EXTRACT (YEAR FROM payment_date) AS year FROM payment
+
+//Business application: What months did payments occur?
+SELECT DISTINCT(TO_CHAR(payment_date,'MONTH')) /*Get the distinct months and convert to character string in Month format
+FROM payment
+
+//How many payments occured on a Monday? -> Use 'dow' (day of week) to count
+
+SELECT COUNT(*)
+FROM payment
+WHERE EXTRACT(dow FROM payment_date) = 1 /*dow starts counting from Sunday at 0
+
