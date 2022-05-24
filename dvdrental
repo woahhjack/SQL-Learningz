@@ -275,3 +275,69 @@ SELECT COUNT(*)
 FROM payment
 WHERE EXTRACT(dow FROM payment_date) = 1 /*dow starts counting from Sunday at 0
 
+#Mathematical functions -> All other operators in SQL documentation https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html
+/* Divide  
+SELECT rental_rate/replacement_cost FROM film
+
+#String functions and operators https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
+
+#Subquery 
+SELECT student, grade FROM test_scores
+WHERE grade > (SELECT AVG(grade) FROM test_scores) /*subquery for average test score, it is performed first since it is in parenthesis 
+
+---
+SELECT film_id, title
+FROM film
+WHERE film_id IN /*subquery below)
+(SELECT inventory.film_id 
+FROM rental
+INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id
+WHERE return_date BETWEEN '2005-05-29' AND '2005-05-30')
+
+
+#Self-join -> Joining a table to itself
+What other films happen to match up together as pairs that have the same run-time (length)??
+Current format: |Title | Length |
+Desired format: |Title A| Title B| Length |   where Title A = Title B length
+
+SELECT film1.title, film2.title, film1.length /* assign names film1/2 */
+FROM film AS film1
+INNER JOIN film AS film2 ON
+film1.film_id != film2.film_id /* not equals because we don't want titles to match with itself*/
+
+
+
+//// Creating Table \\\\
+#syntax
+CREATE TABLE table_name (
+column_name TYPE column_constraint, /* First should be primary key -> use SERIAL type */
+column_name TYPE column_constraint,
+);
+
+examples:
+
+CREATE TABLE players(
+player_id SERIAL PRIMARY KEY,
+age SMALLINT NOT NULL
+);
+
+CREATE TABLE account(
+	user_id SERIAL PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL
+	password VARCHAR(50) NOT NULL,
+	email VARCHAR(250) NOT NULL,
+	created_on TIMESTAMP NOT NULL,
+	last_login TIMESTAMP
+);
+
+CREATE TABLE job(
+	job_id SERIAL PRIMARY KEY,
+	job_name VARCHAR(200) UNIQUE NOT NULL
+	);
+  
+  /* intermediary table to link account to job */
+  CREATE TABLE account_job (
+	user_id INTEGER REFERENCES account(user_id), /* REFERENCES table_name(column_name) */
+	job_id INTEGER REFERENCES job(job_id),
+	hire_date TIMESTAMP
+	)
