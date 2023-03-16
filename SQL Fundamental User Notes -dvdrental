@@ -308,6 +308,18 @@ film1.film_id != film2.film_id /* not equals because we don't want titles to mat
 
 
 //// Creating Table \\\\
+
+#Think about what you want to store, for example we don't perform arithmetic with a phone number so store it as a VARCHAR instead
+#Always search up the best practices for storing data types
+#Plan for long-term storage -> Can always remove historical info but can't go back in time and add info!
+#PK Primary Key can never be changed, consider how it may link  to a secondary key and table.
+#A secondary key will always constrain a schema -> Check the tables "Contraints" to see secondary keys
+
+#constraints
+Column constraints:NOT NULL, UNIQUE, PRIMARY Key, FOREIGN Key, CHECK, EXCLUSION
+Table constraints: CHECK, REFERENCES, UNIQUE, PRIMARY Key
+
+
 #syntax
 CREATE TABLE table_name (
 column_name TYPE column_constraint, /* First should be primary key -> use SERIAL type */
